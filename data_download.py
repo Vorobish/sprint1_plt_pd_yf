@@ -4,6 +4,7 @@
 '''
 
 import yfinance as yf  # исторические данные об акциях
+import pandas as pd
 
 
 def fetch_stock_data(ticker, period='1mo'):
@@ -12,6 +13,19 @@ def fetch_stock_data(ticker, period='1mo'):
     '''
     stock = yf.Ticker(ticker)  # уникальный торговый код
     data = stock.history(period=period)
+    '''
+        Date - Дата
+        Open - Открытие	
+        High - Максимум	
+        Low	- Минимум
+        Close - Закрытие	
+        Volume - Объем	
+        Dividends - Дивиденды	
+        Stock Splits - Дробление акций
+    '''
+
+    with open('files/data.csv', encoding='utf-8', mode='w') as file:
+        file.write(data.to_csv())
     return data
 
 
@@ -21,3 +35,13 @@ def add_moving_average(data, window_size=5):
     '''
     data['Moving_Average'] = data['Close'].rolling(window=window_size).mean()
     return data
+
+
+def calculate_and_display_average_price(data):
+    '''
+        Вывод средней цены за период
+    '''
+    df = pd.DataFrame(data)
+    avg = df.loc[:, 'Close'].mean()
+    print(f'Средняя цена закрытия за период = {avg}')
+

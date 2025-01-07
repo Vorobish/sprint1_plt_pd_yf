@@ -29,6 +29,9 @@ def main():
     # Plot the data - создание и сохранение графика
     dplt.create_and_save_plot(stock_data, ticker, period)
 
+    # Вывод средней цены за период
+    dd.calculate_and_display_average_price(stock_data)
+
 
 if __name__ == "__main__":
     main()
