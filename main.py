@@ -19,6 +19,12 @@ def main():
 
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+    threshold = 'a'
+    while not isinstance(threshold, float):
+        try:
+            threshold = float(threshold)
+        except:
+            threshold = input("Введите максимально допустимый порог колебаний цены (например, 1): ")
 
     # Fetch stock data - получение исторических данных
     stock_data = dd.fetch_stock_data(ticker, period)
@@ -28,6 +34,12 @@ def main():
 
     # Plot the data - создание и сохранение графика
     dplt.create_and_save_plot(stock_data, ticker, period)
+
+    # Вывод средней цены за период
+    dd.calculate_and_display_average_price(stock_data)
+
+    # Уведомление о сильных колебаниях
+    dd.notify_if_strong_fluctuations(stock_data, threshold, ticker, period)
 
 
 if __name__ == "__main__":
