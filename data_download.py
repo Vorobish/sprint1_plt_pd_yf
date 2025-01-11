@@ -45,3 +45,13 @@ def calculate_and_display_average_price(data):
     avg = df.loc[:, 'Close'].mean()
     print(f'Средняя цена закрытия за период = {avg}')
 
+
+def notify_if_strong_fluctuations(data, threshold, ticker, period):
+    '''
+        Уведомление о сильных колебаниях
+    '''
+    df = pd.DataFrame(data)
+    min = df.loc[:, 'Close'].min()
+    max = df.loc[:, 'Close'].max()
+    if max - min > threshold:
+        print(f'Цена акций {ticker} колебалась более чем на {threshold} (на {max - min}) за период {period} ')
