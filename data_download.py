@@ -5,6 +5,7 @@
 
 import yfinance as yf  # исторические данные об акциях
 import pandas as pd
+import numpy as np
 
 
 def fetch_stock_data(ticker, period='1mo'):
@@ -23,9 +24,6 @@ def fetch_stock_data(ticker, period='1mo'):
         Dividends - Дивиденды	
         Stock Splits - Дробление акций
     '''
-
-    with open('files/data.csv', encoding='utf-8', mode='w') as file:
-        file.write(data.to_csv())
     return data
 
 
@@ -55,3 +53,12 @@ def notify_if_strong_fluctuations(data, threshold, ticker, period):
     max = df.loc[:, 'Close'].max()
     if max - min > threshold:
         print(f'Цена акций {ticker} колебалась более чем на {threshold} (на {max - min}) за период {period} ')
+
+
+def export_data_to_csv(data, filename):
+    '''
+        Экспорт данных в CSV
+    '''
+    headers = ';'.join(str(el) for el in data.columns.to_list())
+    np.savetxt(f'files/{filename}.csv', data, fmt='%s', delimiter=';', header=headers)  # fmt='%.4f'
+    print(f'Данные сохранены в папку files файл {filename}.csv')
